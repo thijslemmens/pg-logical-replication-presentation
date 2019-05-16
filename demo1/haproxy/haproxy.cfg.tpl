@@ -1,12 +1,16 @@
+global
+    maxconn 100
+
 defaults
-        mode    tcp
-        balance leastconn
-        timeout client      30000ms
-        timeout server      30000ms
-        timeout connect      3000ms
-        retries 3
-frontend fr_server1
-        bind 0.0.0.0:5432
-        default_backend bk_server1
-backend bk_server1
-        server srv1 postgresql%PG_VERSION%:5432 maxconn 2048
+    log global
+    mode tcp
+    retries 2
+    timeout client 30m
+    timeout connect 4s
+    timeout server 30m
+    timeout check 5s
+
+listen postgres
+    bind *:5432
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+    server srv%PG_VERSION% postgresql%PG_VERSION%:5432 maxconn 2048

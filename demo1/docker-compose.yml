@@ -49,6 +49,16 @@ services:
     volumes:
       - ./haproxy:/usr/local/etc/haproxy:ro
 
+  pgadmin4:
+    image: dpage/pgadmin4
+    ports:
+      - 8080:80
+    volumes:
+      - ./servers.json:/servers.json
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+
 volumes:
   postgres10:
   postgres11:
