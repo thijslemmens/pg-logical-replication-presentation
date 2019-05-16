@@ -1,0 +1,14 @@
+*.iml
+*.ipr
+*.iws
+target/
+build/
+.svn/
+.idea/
+.gradle/
+**/.project
+**/.classpath
+**/.settings/
+**/out/
+.vscode
+demo1/haproxy/haproxy.cfg

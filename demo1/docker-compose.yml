@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  postgresql10:
+    image: xeniteu/postgres:10.8
+    volumes:
+      - postgres10:/var/lib/postgresql/data
+      - share:/share
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=demo1
+      - POSTGRES_PASSWORD=demo1
+      - POSTGRES_DB=demo1
+      - "PGCONF_wal_level=logical"
+      - "PGCONF_max_wal_senders=20"
+      - "PGCONF_max_replication_slots=20"
+      - PGHBAREPLACE=true
+      - PGHBA_1=local all all trust
+      - PGHBA_2=host all all 127.0.0.1/32 trust
+      - PGHBA_3=host demo1 demo1 all md5
+      - PGHBA_4=host replication demo1 192.0.0.0 0.0.0.0 trust
+      - PGHBA_5=host demo1 demo1 192.0.0.0 0.0.0.0 trust
+    restart: unless-stopped
+
+  postgresql11:
+    image: xeniteu/postgres:11.3
+    volumes:
+      - postgres11:/var/lib/postgresql/data
+      - share:/share
+    environment:
+      - POSTGRES_USER=demo1
+      - POSTGRES_PASSWORD=demo1
+      - POSTGRES_DB=demo1
+      - "PGCONF_wal_level=logical"
+      - "PGCONF_max_wal_senders=20"
+      - "PGCONF_max_replication_slots=20"
+      - PGHBAREPLACE=true
+      - PGHBA_1=local all all trust
+      - PGHBA_2=host all all 127.0.0.1/32 trust
+      - PGHBA_3=host demo1 demo1 all md5
+      - PGHBA_4=host replication demo1 192.0.0.0 0.0.0.0 trust
+      - PGHBA_5=host demo1 demo1 192.0.0.0 0.0.0.0 trust
+    restart: unless-stopped
+
+  haproxy:
+    image: haproxy
+    ports:
+      - 5432:5432
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy:ro
+
+volumes:
+  postgres10:
+  postgres11:
+  share:
