@@ -12,3 +12,6 @@ build/
 **/out/
 .vscode
 demo1/haproxy/haproxy.cfg
+Thumbs.db
+Thumbs.db:encryptable
+~$*

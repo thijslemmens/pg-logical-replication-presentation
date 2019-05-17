@@ -33,7 +33,7 @@ docker exec demo1_postgresql11_1 psql -c "create subscription demo1_subscription
 #check that it is replicating
 read -p "Insert something in PG10 and check it appears in PG11. Insert something in PG11 and see what happens. Press any key to continue... " -n1 -s
 
-#correct sequence
+#correct sequence https://wiki.postgresql.org/wiki/Fixing_Sequences
 docker exec demo1_postgresql11_1 psql -c "SELECT SETVAL('public.test_id_seq', COALESCE(MAX(id), 1) + 1000) FROM public.test;" -U demo1 demo1;
 
 #set haproxy config to point to postgresql11
